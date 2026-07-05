@@ -1,6 +1,7 @@
 import { useRef, useState } from "react";
 import { useGame } from "../../../context/GameContext";
 import { saveScore } from "../../../services/scoreService";
+import { sounds, unlockAudio } from "../../../utils/soundManager";
 
 const COLORS = ["red", "blue", "green", "yellow"];
 const MAX_ROUNDS = 15;
@@ -26,6 +27,7 @@ export default function MemoryGame() {
 
   const flashColor = (color, cb) => {
     setLitColor(color);
+    sounds.memoryFlash(color);
     setTimeout(() => {
       setLitColor(null);
       if (cb) setTimeout(cb, 200);
@@ -64,6 +66,7 @@ export default function MemoryGame() {
 
 
   const startGame = () => {
+    unlockAudio();
     sequenceRef.current = [];
     userInputRef.current = [];
     playingRef.current = true;
@@ -82,6 +85,7 @@ export default function MemoryGame() {
         setTimeout(addRound, 500);
       } else {
         setCountdown(count);
+        sounds.countdownTick();
       }
     }, 1000);
   };
@@ -93,6 +97,7 @@ export default function MemoryGame() {
 
     if (won) {
       setMessage("🎉 You won! All 15 rounds complete!");
+      sounds.memoryWin();
     } else {
       setMessage(`Game over! You reached round ${finalRound}`);
     }
@@ -116,6 +121,7 @@ export default function MemoryGame() {
     const idx = input.length - 1;
 
     if (input[idx] !== sequenceRef.current[idx]) {
+      sounds.memoryWrong();
       gameOver(false);
       return;
     }
@@ -127,6 +133,7 @@ export default function MemoryGame() {
         return;
       }
       setMessage("Correct! Next round...");
+      sounds.memoryNextRound();
       setTimeout(addRound, 1000);
     }
   };

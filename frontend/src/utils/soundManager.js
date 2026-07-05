@@ -55,9 +55,16 @@ const playSequence = (notes) => {
   notes.forEach((note) => playTone(note));
 };
 
+
+export const unlockAudio = () => {
+  const ctx = getCtx();
+  playTone({ frequency: 440, duration: 0.001, volume: 0.0001 });
+  return ctx;
+};
+
 const MEMORY_COLOR_FREQ = {
   red: 329.63, 
-  blue: 261.63, 
+  blue: 261.63,
   green: 392.0, 
   yellow: 220.0, 
 };
@@ -72,7 +79,6 @@ export const sounds = {
       { frequency: 783.99, duration: 0.45, type: "sine", volume: 0.22, startDelay: 0.2 },
     ]),
 
-
   countdownTick: () => playTone({ frequency: 440, duration: 0.1, type: "square", volume: 0.15 }),
   go: () => playTone({ frequency: 987.77, duration: 0.2, type: "sine", volume: 0.25 }),
   tooSoon: () =>
@@ -85,7 +91,7 @@ export const sounds = {
       { frequency: 783.99, duration: 0.45, type: "sine", volume: 0.22, startDelay: 0.2 },
     ]),
 
- 
+
   memoryFlash: (color) =>
     playTone({ frequency: MEMORY_COLOR_FREQ[color] || 440, duration: 0.3, type: "square", volume: 0.2 }),
   memoryWrong: () =>

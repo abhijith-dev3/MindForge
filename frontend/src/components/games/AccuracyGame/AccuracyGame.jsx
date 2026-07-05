@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { useGame } from "../../../context/GameContext";
 import { saveScore } from "../../../services/scoreService";
-import { sounds } from "../../../utils/soundManager";
+import { sounds, unlockAudio } from "../../../utils/soundManager";
 
 const MAX_ROUNDS = 10;
 const BOARD_SIZE = 320;
@@ -43,6 +43,7 @@ export default function AccuracyGame() {
   };
 
   const startGame = () => {
+    unlockAudio();
     clearTimeout(timeoutRef.current);
     setScore(0);
     setBest(0);

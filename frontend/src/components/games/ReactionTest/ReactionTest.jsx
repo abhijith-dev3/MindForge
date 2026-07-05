@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { useGame } from "../../../context/GameContext";
 import { saveScore } from "../../../services/scoreService";
-import { sounds } from "../../../utils/soundManager";
+import { sounds, unlockAudio } from "../../../utils/soundManager";
 
 const TOTAL_ROUNDS = 5;
 
@@ -46,6 +46,7 @@ export default function ReactionTest() {
   };
 
   const startGame = () => {
+   unlockAudio();
    setScores([]);
    setRound(1);
    setAvgTime(null);
@@ -93,7 +94,7 @@ export default function ReactionTest() {
       incrementGamesPlayed();
       sounds.reactionGameOver();
 
-     
+      // Save to backend
       saveScore("reaction", avg, { best: Math.min(...newScores), rounds: newScores });
     }
   };
