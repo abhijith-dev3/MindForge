@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { useGame } from "../../../context/GameContext";
 import { saveScore } from "../../../services/scoreService";
+import { sounds } from "../../../utils/soundManager";
 
 const TOTAL_ROUNDS = 5;
 
@@ -34,10 +35,12 @@ export default function ReactionTest() {
         waitTimeoutRef.current = setTimeout(() => {
           setState("ready"); 
           setMessage("CLICK NOW!");
+          sounds.go();
           startTime.current = Date.now();
         }, delay);
       } else {
         setCountdown(count);
+        sounds.countdownTick();
       }
     }, 1000);
   };
@@ -62,6 +65,7 @@ export default function ReactionTest() {
   const handleClick = () => {
     if (state === "waiting") {
       clearTimeout(waitTimeoutRef.current);
+      sounds.tooSoon();
       setMessage("Too soon! Click Start to try again.");
       setState("idle");
       return;
@@ -74,6 +78,7 @@ export default function ReactionTest() {
     updateBestScore("reaction", reactionTime, "lower");
 
     if (round < TOTAL_ROUNDS) {
+      sounds.reactionRound();
       setMessage(`Round ${round}: ${reactionTime}ms`);
       setRound((prev) => prev + 1);
       setTimeout(() => {
@@ -86,8 +91,9 @@ export default function ReactionTest() {
       setMessage(`Game Over! Avg: ${avg}ms`);
       setState("finished");
       incrementGamesPlayed();
+      sounds.reactionGameOver();
 
-      // Save to backend
+     
       saveScore("reaction", avg, { best: Math.min(...newScores), rounds: newScores });
     }
   };

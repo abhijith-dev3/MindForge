@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { useGame } from "../../../context/GameContext";
 import { saveScore } from "../../../services/scoreService";
+import { sounds } from "../../../utils/soundManager";
 
 const MAX_ROUNDS = 10;
 const BOARD_SIZE = 320;
@@ -33,9 +34,10 @@ export default function AccuracyGame() {
     setTargetPos(null);
     setMessage(`Game Over 🎯 Avg: ${avg}ms`);
     incrementGamesPlayed();
+    sounds.accuracyGameOver();
     if (avg) {
       updateBestScore("accuracy", avg, "lower");
-  
+
       saveScore("accuracy", avg, { best: Math.min(...times), rounds: times });
     }
   };
@@ -52,6 +54,7 @@ export default function AccuracyGame() {
   };
 
   const handleClick = () => {
+    sounds.hit();
     const reactionTime = Date.now() - startTime.current;
     const updatedResults = [...results, reactionTime];
     setResults(updatedResults);
