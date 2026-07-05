@@ -35,7 +35,7 @@ export default function AccuracyGame() {
     incrementGamesPlayed();
     if (avg) {
       updateBestScore("accuracy", avg, "lower");
-      // ✅ Save to backend: score = avg ms (lower is better)
+  
       saveScore("accuracy", avg, { best: Math.min(...times), rounds: times });
     }
   };
