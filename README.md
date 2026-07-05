@@ -18,6 +18,8 @@ Accuracy Game 🎯
 📱 Fully responsive UI
 ⚡ Fast and modern UI with React + Vite
 🛠️ Tech Stack
+
+
 Frontend
 React.js
 React Router
